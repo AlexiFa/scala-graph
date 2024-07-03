@@ -1,0 +1,9 @@
+{
+  "type": "directed",
+  "nodes": ["A", "B", "C"],
+  "adjacency": {
+    "A": ["B", "C"],
+    "B": ["C"],
+    "C": []
+  }
+}
