@@ -1,5 +1,6 @@
 {
-  "type": "weighted",
+  "directed": false,
+  "weighted": true,
   "nodes": ["A", "B", "C", "D", "E"],
   "adjacency": {
     "A": [
