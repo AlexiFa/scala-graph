@@ -3,28 +3,29 @@
   "weighted": true,
   "nodes": ["A", "B", "C", "D", "E"],
   "adjacency": {
-    "A": [
-      {"node": "B", "weight": 3},
-      {"node": "D", "weight": 8},
-      {"node": "E", "weight": 7}
-    ],
-    "B": [
-      {"node": "C", "weight": 1},
-      {"node": "D", "weight": 4}
-    ],
-    "C": [
-      {"node": "B", "weight": 1},
-      {"node": "D", "weight": 2}
-    ],
-    "D": [
-      {"node": "A", "weight": 8},
-      {"node": "B", "weight": 4},
-      {"node": "C", "weight": 2},
-      {"node": "E", "weight": 3}
-    ],
-    "E": [
-      {"node": "A", "weight": 7},
-      {"node": "D", "weight": 3}
-    ]
+    "A": {
+        "B": 3,
+        "D": 8,
+        "E": 7
+    },
+    "B": {
+        "A": 3,
+        "C": 1,
+        "D": 4
+    },
+    "C": {
+        "B": 1,
+        "D": 2
+    },
+    "D": {
+        "A": 8,
+        "B": 4,
+        "C": 2,
+        "E": 3
+    },
+    "E": {
+        "A": 7,
+        "D": 3
+    }
   }
 }
