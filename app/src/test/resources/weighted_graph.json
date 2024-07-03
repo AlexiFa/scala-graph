@@ -1,29 +1,67 @@
 {
   "type": "weighted",
-  "nodes": ["A", "B", "C", "D", "E"],
-  "adjacency": {
+  "nodes": {
     "A": [
-      {"node": "B", "weight": 3},
-      {"node": "D", "weight": 8},
-      {"node": "E", "weight": 7}
+      {
+        "node": "B",
+        "weight": 3
+      },
+      {
+        "node": "D",
+        "weight": 8
+      },
+      {
+        "node": "E",
+        "weight": 7
+      }
     ],
     "B": [
-      {"node": "C", "weight": 1},
-      {"node": "D", "weight": 4}
+      {
+        "node": "C",
+        "weight": 1
+      },
+      {
+        "node": "D",
+        "weight": 4
+      }
     ],
     "C": [
-      {"node": "B", "weight": 1},
-      {"node": "D", "weight": 2}
+      {
+        "node": "B",
+        "weight": 1
+      },
+      {
+        "node": "D",
+        "weight": 2
+      }
     ],
     "D": [
-      {"node": "A", "weight": 8},
-      {"node": "B", "weight": 4},
-      {"node": "C", "weight": 2},
-      {"node": "E", "weight": 3}
+      {
+        "node": "A",
+        "weight": 8
+      },
+      {
+        "node": "B",
+        "weight": 4
+      },
+      {
+        "node": "C",
+        "weight": 2
+      },
+      {
+        "node": "E",
+        "weight": 3
+      }
     ],
     "E": [
-      {"node": "A", "weight": 7},
-      {"node": "D", "weight": 3}
+      {
+        "node": "A",
+        "weight": 7
+      },
+      {
+        "node": "D",
+        "weight": 3
+      }
     ]
   }
 }
