@@ -157,4 +157,5 @@ hs_err_pid*
 .ionide
 .bloop
 project/project/metals.sbt
+project/metals.sbt
 # End of https://www.toptal.com/developers/gitignore/api/scala,sbt,intellij,visualstudiocode
