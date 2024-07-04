@@ -10,10 +10,21 @@
     "B": [
       {
         "from": "B",
+        "to": "A",
+        "weight": 4
+      },
+      {
+        "from": "B",
         "to": "C",
         "weight": 5
       }
     ],
-    "C": []
+    "C": [
+      {
+        "from": "C",
+        "to": "B",
+        "weight": 5
+      }
+    ]
   }
 }
