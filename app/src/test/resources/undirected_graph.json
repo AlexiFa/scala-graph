@@ -1,44 +1,25 @@
 {
-  "type": "undirected",
-  "nodes": {
+  "adjList": {
     "A": [
       {
-        "node": "D"
+        "from": "A",
+        "to": "B"
       }
     ],
     "B": [
       {
-        "node": "D"
+        "from": "B",
+        "to": "A"
       },
       {
-        "node": "E"
+        "from": "B",
+        "to": "C"
       }
     ],
     "C": [
       {
-        "node": "E"
-      }
-    ],
-    "D": [
-      {
-        "node": "A"
-      },
-      {
-        "node": "B"
-      },
-      {
-        "node": "E"
-      }
-    ],
-    "E": [
-      {
-        "node": "B"
-      },
-      {
-        "node": "C"
-      },
-      {
-        "node": "D"
+        "from": "C",
+        "to": "B"
       }
     ]
   }

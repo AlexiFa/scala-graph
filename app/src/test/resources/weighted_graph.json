@@ -1,67 +1,19 @@
 {
-  "type": "weighted",
-  "nodes": {
+  "adjList": {
     "A": [
       {
-        "node": "B",
-        "weight": 3
-      },
-      {
-        "node": "D",
-        "weight": 8
-      },
-      {
-        "node": "E",
-        "weight": 7
+        "from": "A",
+        "to": "B",
+        "weight": 4
       }
     ],
     "B": [
       {
-        "node": "C",
-        "weight": 1
-      },
-      {
-        "node": "D",
-        "weight": 4
+        "from": "B",
+        "to": "C",
+        "weight": 5
       }
     ],
-    "C": [
-      {
-        "node": "B",
-        "weight": 1
-      },
-      {
-        "node": "D",
-        "weight": 2
-      }
-    ],
-    "D": [
-      {
-        "node": "A",
-        "weight": 8
-      },
-      {
-        "node": "B",
-        "weight": 4
-      },
-      {
-        "node": "C",
-        "weight": 2
-      },
-      {
-        "node": "E",
-        "weight": 3
-      }
-    ],
-    "E": [
-      {
-        "node": "A",
-        "weight": 7
-      },
-      {
-        "node": "D",
-        "weight": 3
-      }
-    ]
+    "C": []
   }
 }

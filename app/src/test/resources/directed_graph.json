@@ -1,33 +1,17 @@
 {
-  "type": "directed",
-  "nodes": {
+  "adjList": {
     "A": [
       {
-        "node": "B"
+        "from": "A",
+        "to": "B"
       }
     ],
     "B": [
       {
-        "node": "C"
-      },
-      {
-        "node": "D"
+        "from": "B",
+        "to": "C"
       }
     ],
-    "C": [
-      {
-        "node": "E"
-      }
-    ],
-    "D": [
-      {
-        "node": "C"
-      }
-    ],
-    "E": [
-      {
-        "node": "D"
-      }
-    ]
+    "C": []
   }
 }
