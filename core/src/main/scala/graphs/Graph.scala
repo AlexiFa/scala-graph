@@ -1,5 +1,0 @@
-package graphs
-
-trait Graph {
-
-}
