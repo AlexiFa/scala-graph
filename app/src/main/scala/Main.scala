@@ -12,9 +12,9 @@ object Main extends ZIOAppDefault {
     val v1 = Vertex("A")
     val v2 = Vertex("B")
     val v3 = Vertex("C")
-    val graph = UndiGraph(Map(v1 -> Set.empty, v2 -> Set.empty, v3 -> Set.empty))
-    val graph2 = graph.addEdge(v1, v2)
-    val graph3 = graph2.addEdge(v2, v3)
+    var graph = UndiGraph(Map(v1 -> Set.empty, v2 -> Set.empty, v3 -> Set.empty))
+    graph = graph.addEdge(v1, v2)
+    graph = graph.addEdge(v2, v3)
 
 //    val e1 = Edge(v1, v2, None)
 //    val e2 = Edge(v2, v3, None)
