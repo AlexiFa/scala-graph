@@ -6,6 +6,7 @@
 //    printLine("Welcome to your first ZIO app!")
 import zio._
 import graphs._
+import graphs.GraphVizExtensions._
 
 object Main extends ZIOAppDefault {
   def run: ZIO[Environment & ZIOAppArgs & Scope, Any, Any] = {
@@ -17,6 +18,6 @@ object Main extends ZIOAppDefault {
     val graph = DiGraph(Map(v1 -> Set(e1), v2 -> Set(e2), v3 -> Set.empty))
     // val graph = new Map[Vertex, Set[Edge]]
     // val test = Graph(GraphType.Undirected, Map.empty)
-    Console.printLine("Hello, World!").exitCode
+    Console.printLine(graph.toDot).exitCode
   }
 }
