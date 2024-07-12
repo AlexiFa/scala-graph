@@ -14,3 +14,16 @@ case class DiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBa
   }
   def neighbors(v: V): Set[V] = adjList.getOrElse(v, Set.empty).map(_._2)
 }
+
+object DiGraph {
+  implicit val mapDecoder: JsonDecoder[Map[Vertex, Set[Edge]]] = JsonDecoder.map[String, Set[Edge]].map(_.map {
+    case (k, v) => Vertex(k) -> v
+  })
+
+  implicit val mapEncoder: JsonEncoder[Map[Vertex, Set[Edge]]] = JsonEncoder.map[String, Set[Edge]].contramap(_.map {
+    case (k, v) => k.name -> v
+  })
+
+  implicit val decoder: JsonDecoder[DiGraph] = mapDecoder.map(DiGraph(_))
+  implicit val encoder: JsonEncoder[DiGraph] = mapEncoder.contramap(_.adjList)
+}
