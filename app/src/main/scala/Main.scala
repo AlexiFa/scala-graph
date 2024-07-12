@@ -10,7 +10,7 @@ import graphs._
 
 object Main extends ZIOAppDefault {
   def run: ZIO[Environment & ZIOAppArgs & Scope, Any, Any] = {
-    var graph = UndiGraph(Map("A" -> Set.empty, "B" -> Set.empty, "C" -> Set.empty))
+    var graph = UndirectedGraph(Map("A" -> Set.empty, "B" -> Set.empty, "C" -> Set.empty))
     graph = graph.addEdge(("A", "B", None))
     graph = graph.addEdge(("B", "C", None))
 //    val e1 = Edge(v1, v2, None)

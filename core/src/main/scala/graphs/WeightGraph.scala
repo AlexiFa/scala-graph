@@ -1,6 +1,6 @@
 package graphs
 
-case class WeightGraph[V](override val adjList: Map[V, Set[(V, V, Option[Int])]]) extends UndiGraph[V](adjList){
+case class WeightGraph[V](override val adjList: Map[V, Set[(V, V, Option[Int])]]) extends UndirectedGraph[V](adjList){
   override def addEdge(edge: (V, V, Option[Int])): WeightGraph[V] = {
     WeightGraph(super.addEdge(edge).adjList)
   }
