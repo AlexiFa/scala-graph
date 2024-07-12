@@ -1,6 +1,6 @@
 package graphs
 
-import zio.json.{DeriveJsonDecoder, DeriveJsonEncoder, JsonDecoder, JsonEncoder}
+import zio.json._
 
 case class Vertex(name: String)
 
