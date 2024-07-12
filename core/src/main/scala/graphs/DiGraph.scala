@@ -1,16 +1,16 @@
 package graphs
 
-case class DiGraph(adjList: Map[Vertex, Set[Edge]]) extends GraphBase[Vertex, Edge]{
-  def vertices: Set[Vertex] = adjList.keySet
-  def edges: Set[Edge] = adjList.values.flatten.toSet
-  def addEdge(v1: Vertex, v2: Vertex, weight: Option[Int] = None): DiGraph = {
-    val edge = Edge(v1, v2, None)
+case class DiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBase[V]{
+  def vertices: Set[V] = adjList.keySet
+  def edges: Set[(V, V, Option[Int])] = adjList.values.flatten.toSet
+  def addEdge(edge: (V, V, Option[Int])): DiGraph[V] = {
+    val (v1, v2, _) = edge
     val newAdjList = adjList.updatedWith(v1)(_.map(_ + edge).orElse(Some(Set(edge))))
     DiGraph(newAdjList)
   }
-  def removeEdge(v1: Vertex, v2: Vertex): DiGraph = {
-    val newAdjList = adjList.updatedWith(v1)(_.map(_.filterNot(_.to == v2)))
+  def removeEdge(v1: V, v2: V): DiGraph[V] = {
+    val newAdjList = adjList.updatedWith(v1)(_.map(_.filterNot(_._2 == v2)))
     DiGraph(newAdjList)
   }
-  def neighbors(v: Vertex): Set[Vertex] = adjList.getOrElse(v, Set.empty).map(_.to)
+  def neighbors(v: V): Set[V] = adjList.getOrElse(v, Set.empty).map(_._2)
 }

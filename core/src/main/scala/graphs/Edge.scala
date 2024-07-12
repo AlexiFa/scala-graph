@@ -1,3 +1,3 @@
 package graphs
 
-case class Edge(from: Vertex, to: Vertex, weight: Option[Int])
+case class Edge[V](from: V, to: V, weight: Option[Int])
