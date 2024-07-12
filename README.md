@@ -10,7 +10,7 @@
 - [ ] JSON encoding/decoding
 - [ ] GraphViz display
 - [ ] Graph algorithms
-  - [ ] Depth-first search
+  - [ ] Depth-first search (Undirected, Directed, Weighted)
   - [ ] Breadth-first search
   - [ ] Topological sort
   - [ ] Cycle detection
