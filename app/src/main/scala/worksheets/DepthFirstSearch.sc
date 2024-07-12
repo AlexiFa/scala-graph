@@ -8,7 +8,7 @@ graph = graph.addEdge(2, 3)
 graph = graph.addEdge(2, 4)
 graph = graph.addEdge(3, 2)
 
-val res = operations.GraphOperationsImpl.DepthFirstSearch(graph, 0, Set.empty)
+val res = operations.GraphOperationsImpl.DepthFirstSearch(graph, 0)
 
 var weightGraph: graphs.WeightGraph[Any] = graphs.WeightGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty, 4 -> Set.empty))
 
@@ -19,4 +19,4 @@ weightGraph = weightGraph.addEdge(2, 3, 4)
 weightGraph = weightGraph.addEdge(2, 4, 5)
 weightGraph = weightGraph.addEdge(3, 2, 6)
 
-val res2 = operations.GraphOperationsImpl.DepthFirstSearch(weightGraph, 0, Set.empty)
+val res2 = operations.GraphOperationsImpl.DepthFirstSearch(weightGraph, 0)
