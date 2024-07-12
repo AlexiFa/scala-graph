@@ -83,7 +83,8 @@ fabric.properties
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-*/*.iml
+.idea/
+*.iml
 # modules.xml
 # .idea/misc.xml
 # *.ipr
@@ -155,5 +156,7 @@ hs_err_pid*
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .ionide
-
+.bloop
+project/project/metals.sbt
+project/metals.sbt
 # End of https://www.toptal.com/developers/gitignore/api/scala,sbt,intellij,visualstudiocode
