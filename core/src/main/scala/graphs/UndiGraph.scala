@@ -1,6 +1,6 @@
 package graphs
 
-case class UndiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBase[V]{
+class UndiGraph[V](val adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBase[V]{
   def vertices: Set[V] = adjList.keySet
   def edges: Set[(V, V, Option[Int])] = adjList.values.flatten.toSet
   def addEdge(edge: (V, V, Option[Int])): UndiGraph[V] = {
@@ -17,4 +17,9 @@ case class UndiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends Graph
     UndiGraph(newAdjList)
   }
   def neighbors(v: V): Set[V] = adjList.getOrElse(v, Set.empty).map(_._2)
+}
+
+object UndiGraph {
+  def apply[V](adjList: Map[V, Set[(V, V, Option[Int])]]): UndiGraph[V] = new UndiGraph(adjList)
+  def unapply[V](graph: UndiGraph[V]): Option[Map[V, Set[(V, V, Option[Int])]]] = Some(graph.adjList)
 }
