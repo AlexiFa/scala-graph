@@ -8,6 +8,7 @@ case class DiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBa
     val newAdjList = adjList.updatedWith(v1)(_.map(_ + edge).orElse(Some(Set(edge))))
     DiGraph(newAdjList)
   }
+  def addEdge(from: V, to: V): DiGraph[V] = addEdge((from, to, None))
   def removeEdge(v1: V, v2: V): DiGraph[V] = {
     val newAdjList = adjList.updatedWith(v1)(_.map(_.filterNot(_._2 == v2)))
     DiGraph(newAdjList)

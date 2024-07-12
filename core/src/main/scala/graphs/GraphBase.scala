@@ -1,7 +1,5 @@
 package graphs
 
-type E[V] = (V, V, Option[Int])
-
 trait GraphBase[V] {
   def vertices: Set[V]
   def edges: Set[(V, V, Option[Int])]
