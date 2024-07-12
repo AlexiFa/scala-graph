@@ -13,7 +13,7 @@ object DepthFirstSearchSpec extends ZIOSpecDefault{
         graph = graph.addEdge(2, 3)
         graph = graph.addEdge(2, 4)
         graph = graph.addEdge(3, 2)
-        val res = GraphOperationsImpl.DepthFirstSearch(graph, 0, Set.empty)
+        val res = GraphOperationsImpl.DepthFirstSearch(graph, 0)
         assertTrue(res == Set(0, 1, 2, 3, 4))
       },
       test("DiGraph") {
@@ -25,7 +25,7 @@ object DepthFirstSearchSpec extends ZIOSpecDefault{
         graph = graph.addEdge(1, 3)
         graph = graph.addEdge(2, 0)
         graph = graph.addEdge(3, 3)
-        val res = GraphOperationsImpl.DepthFirstSearch(graph, 2, Set.empty)
+        val res = GraphOperationsImpl.DepthFirstSearch(graph, 2)
         assertTrue(res == Set(2, 0, 1, 3))
         // second digraph
         var graph2: DiGraph[Any] = DiGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))
@@ -35,7 +35,7 @@ object DepthFirstSearchSpec extends ZIOSpecDefault{
         graph2 = graph2.addEdge(2, 3)
         graph2 = graph2.addEdge(2, 0)
         graph2 = graph2.addEdge(3, 3)
-        val res2 = GraphOperationsImpl.DepthFirstSearch(graph2, 1, Set.empty)
+        val res2 = GraphOperationsImpl.DepthFirstSearch(graph2, 1)
         assertTrue(res2 == Set(1, 2, 0, 3))
       },
       test("WeightGraph") {
@@ -46,7 +46,7 @@ object DepthFirstSearchSpec extends ZIOSpecDefault{
         weightGraph = weightGraph.addEdge(2, 3, 4)
         weightGraph = weightGraph.addEdge(2, 4, 5)
         weightGraph = weightGraph.addEdge(3, 2, 6)
-        val res = GraphOperationsImpl.DepthFirstSearch(weightGraph, 0, Set.empty)
+        val res = GraphOperationsImpl.DepthFirstSearch(weightGraph, 0)
         assertTrue(res == Set(0, 1, 2, 3, 4))
       }
     )
