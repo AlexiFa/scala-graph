@@ -46,4 +46,25 @@ object GraphOperationsImpl extends GraphOperations[Any] {
     }
     graph.vertices.exists(node => !visited(node) && isCyclicUtil(node))
   }
+
+  // TODO: works for digraphs, but not for undirected graphs
+  def CycleDetectionDi(graph: DiGraph[Any]): Boolean = {
+    var visited: Map[Any, Boolean] = Map().withDefaultValue(false)
+    var recStack: Map[Any, Boolean] = Map().withDefaultValue(false)
+    def isCyclicUtil(vertex: Any): Boolean = {
+      visited += (vertex -> true)
+      recStack += (vertex -> true)
+
+      val hasCycle = graph.neighbors(vertex).exists { neighbor =>
+        if (!visited(neighbor)) {
+          isCyclicUtil(neighbor)
+        } else {
+          recStack(neighbor)
+        }
+      }
+      recStack += (vertex -> false)
+      hasCycle
+    }
+    graph.vertices.exists(node => !visited(node) && isCyclicUtil(node))
+  }
 }
