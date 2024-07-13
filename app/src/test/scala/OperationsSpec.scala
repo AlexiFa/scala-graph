@@ -1,10 +1,31 @@
-import zio.test._
-import graphs._
-import operations._
+import zio.test.*
+import graphs.*
+import operations.*
 
-object DepthFirstSearchSpec extends ZIOSpecDefault{
+object OperationsSpec extends ZIOSpecDefault{
   def spec =
-    suite("spec")(
+    suite("CircleDetection")(
+      test("DiGraph") {
+        var graph: DiGraph[Any] = DiGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))
+        graph = graph.addEdge(0, 1)
+        graph = graph.addEdge(0, 2)
+        graph = graph.addEdge(1, 2)
+        graph = graph.addEdge(1, 3)
+        graph = graph.addEdge(3, 3)
+        graph = graph.addEdge(2, 0)
+        val res = GraphOperationsImpl.CycleDetectionDi(graph)
+        assertTrue(res)
+      }//,
+//      test("UndirectedGraph") {
+//        var graph2: UndirectedGraph[Any] = UndirectedGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))
+//        graph2 = graph2.addEdge(0, 1)
+//        graph2 = graph2.addEdge(1, 2)
+//        graph2 = graph2.addEdge(2, 3)
+//        val res2 = GraphOperationsImpl.CycleDetectionDi(graph2)
+//        assertTrue(!res2)
+//      }
+    )+
+    suite("DFS")(
       test("UndirectedGraph") {
         var graph: UndirectedGraph[Any] = UndirectedGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty, 4 -> Set.empty))
         graph = graph.addEdge(0, 1)

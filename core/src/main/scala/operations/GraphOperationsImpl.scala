@@ -27,7 +27,7 @@ object GraphOperationsImpl extends GraphOperations[Any] {
   }
 
   // TODO: works for digraphs, but not for undirected graphs
-  def CycleDetection(graph: GraphBase[Any]): Boolean = {
+  def CycleDetectionDi(graph: DiGraph[Any]): Boolean = {
     var visited: Map[Any, Boolean] = Map().withDefaultValue(false)
     var recStack: Map[Any, Boolean] = Map().withDefaultValue(false)
     def isCyclicUtil(vertex: Any): Boolean = {
@@ -40,7 +40,6 @@ object GraphOperationsImpl extends GraphOperations[Any] {
         } else {
           recStack(neighbor)
         }
-
       }
       recStack += (vertex -> false)
       hasCycle
