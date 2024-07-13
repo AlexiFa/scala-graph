@@ -1,4 +1,5 @@
 package operations
+
 import graphs._
 
 trait GraphOperations[V] {

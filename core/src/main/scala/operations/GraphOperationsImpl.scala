@@ -1,8 +1,9 @@
 package operations
+
 import graphs._
 import scala.annotation.tailrec
 
-object GraphOperationsImpl extends GraphOperations[Any]{
+object GraphOperationsImpl extends GraphOperations[Any] {
   def DepthFirstSearch(graph: GraphBase[Any], start: Any): Set[Any] = {
     @tailrec
     def dfs(stack: List[Any], visited: Set[Any]): Set[Any] = {
@@ -21,6 +22,7 @@ object GraphOperationsImpl extends GraphOperations[Any]{
           }
       }
     }
-    dfs(List(start), visited=Set.empty)
+
+    dfs(List(start), visited = Set.empty)
   }
 }

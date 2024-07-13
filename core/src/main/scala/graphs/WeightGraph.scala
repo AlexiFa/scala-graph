@@ -19,15 +19,15 @@ object WeightGraph {
 
   def unapply[V](graph: WeightGraph[V]): Option[Map[V, Set[(V, V, Option[Int])]]] = Some(graph.adjList)
 
-  implicit def mapDecoder[V: JsonDecoder: JsonFieldDecoder]: JsonDecoder[Map[V, Set[(V, V, Option[Int])]]] =
+  implicit def mapDecoder[V: JsonDecoder : JsonFieldDecoder]: JsonDecoder[Map[V, Set[(V, V, Option[Int])]]] =
     JsonDecoder.map[V, Set[(V, V, Option[Int])]]
 
-  implicit def mapEncoder[V: JsonEncoder: JsonFieldEncoder]: JsonEncoder[Map[V, Set[(V, V, Option[Int])]]] =
+  implicit def mapEncoder[V: JsonEncoder : JsonFieldEncoder]: JsonEncoder[Map[V, Set[(V, V, Option[Int])]]] =
     JsonEncoder.map[V, Set[(V, V, Option[Int])]]
 
-  implicit def decoder[V: JsonDecoder: JsonFieldDecoder]: JsonDecoder[WeightGraph[V]] =
+  implicit def decoder[V: JsonDecoder : JsonFieldDecoder]: JsonDecoder[WeightGraph[V]] =
     mapDecoder[V].map(WeightGraph(_))
 
-  implicit def encoder[V: JsonEncoder: JsonFieldEncoder]: JsonEncoder[WeightGraph[V]] =
+  implicit def encoder[V: JsonEncoder : JsonFieldEncoder]: JsonEncoder[WeightGraph[V]] =
     mapEncoder[V].contramap(_.adjList)
 }

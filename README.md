@@ -7,7 +7,7 @@
 - [x] Datastructures
 - [x] Base Methods (get vertices, edges, neighbors, addEdge, removeEdge)
 - [x] Types of graphs (directed, undirected, weighted)
-- [ ] JSON encoding/decoding
+- [x] JSON encoding/decoding
 - [ ] GraphViz display
 - [ ] Graph algorithms
   - [x] Depth-first search (Undirected, Directed, Weighted)
