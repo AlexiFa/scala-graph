@@ -39,6 +39,19 @@ object Main extends ZIOAppDefault {
       vertexC -> Set(edge2WR, edge3WR)
     ))
 
+    // Tests d'affichage des graphes
+    println("\nTests d'affichage des graphes:")
+    println("\nAffichage du DiGraph:")
+    graph.printDot(graph)
+
+    println("\nAffichage de l'UndirectedGraph:")
+    uGraph.printDot(uGraph)
+
+    println("\nAffichage du WeightGraph:")
+    wGraph.printDot(wGraph)
+
+
+
     val graphJson = graph.toJson
     println(s"Graph Json: $graphJson")
 

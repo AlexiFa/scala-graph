@@ -24,6 +24,18 @@ class UndirectedGraph[V](val adjList: Map[V, Set[(V, V, Option[Int])]]) extends 
   }
 
   def neighbors(v: V): Set[V] = adjList.getOrElse(v, Set.empty).map(_._2)
+
+  override def toDot(graph: GraphBase[V]): String = {
+    val sb = new StringBuilder
+    sb.append("digraph G {\n")
+    for ((v1, v2, weight) <- graph.edges) {
+      val label = weight.map(w => s""" [label="$w"]""").getOrElse("")
+      sb.append(s"""  "$v1" -- "$v2"$label;\n""")
+    }
+    sb.append("}\n")
+    sb.toString()
+  }
+  
 }
 
 object UndirectedGraph {

@@ -21,6 +21,10 @@ case class DiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBa
   }
 
   def neighbors(v: V): Set[V] = adjList.getOrElse(v, Set.empty).map(_._2)
+
+
+  
+
 }
 
 object DiGraph {
