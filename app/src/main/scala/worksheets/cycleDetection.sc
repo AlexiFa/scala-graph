@@ -8,7 +8,7 @@ graph = graph.addEdge(1, 3)
 //graph = graph.addEdge(3, 3)
 //graph = graph.addEdge(2, 0)
 
-val res = operations.GraphOperationsImpl.CycleDetectionDi(graph)
+val res = operations.GraphOperationsImpl.CycleDetection(graph)
 //val neig = graph.neighbors(1)
 
 var graph2: UndirectedGraph[Any] = UndirectedGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))

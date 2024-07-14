@@ -13,7 +13,7 @@ object OperationsSpec extends ZIOSpecDefault{
         graph = graph.addEdge(1, 3)
         graph = graph.addEdge(3, 3)
         graph = graph.addEdge(2, 0)
-        val res = GraphOperationsImpl.CycleDetectionDi(graph)
+        val res = GraphOperationsImpl.CycleDetection(graph)
         assertTrue(res)
       }//,
 //      test("UndirectedGraph") {

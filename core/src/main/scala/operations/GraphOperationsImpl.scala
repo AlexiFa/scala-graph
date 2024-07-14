@@ -26,8 +26,15 @@ object GraphOperationsImpl extends GraphOperations[Any] {
     dfs(List(start), visited = Set.empty)
   }
 
+  def CycleDetection[G <: GraphBase[Any]](graph: G): Boolean = {
+    graph match {
+      case _: DiGraph[Any] => CycleDetectionDi(graph.asInstanceOf[DiGraph[Any]])
+      case _: UndirectedGraph[Any] => CycleDetectionUndirected(graph.asInstanceOf[UndirectedGraph[Any]])
+    }
+  }
+
   // TODO: works for digraphs, but not for undirected graphs
-  def CycleDetectionDi(graph: DiGraph[Any]): Boolean = {
+  private def CycleDetectionDi(graph: DiGraph[Any]): Boolean = {
     var visited: Map[Any, Boolean] = Map().withDefaultValue(false)
     var recStack: Map[Any, Boolean] = Map().withDefaultValue(false)
     def isCyclicUtil(vertex: Any): Boolean = {
@@ -45,5 +52,9 @@ object GraphOperationsImpl extends GraphOperations[Any] {
       hasCycle
     }
     graph.vertices.exists(node => !visited(node) && isCyclicUtil(node))
+  }
+
+  private def CycleDetectionUndirected(graph: UndirectedGraph[Any]): Boolean = {
+    true
   }
 }
