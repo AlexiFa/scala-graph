@@ -13,8 +13,11 @@ object OperationsSpec extends ZIOSpecDefault{
         graph = graph.addEdge(1, 3)
         graph = graph.addEdge(3, 3)
         graph = graph.addEdge(2, 0)
-        val res = GraphOperationsImpl.CycleDetection(graph)
-        assertTrue(res)
+        assertTrue(GraphOperationsImpl.CycleDetection(graph))
+
+        graph = graph.removeEdge(3, 3)
+        graph = graph.removeEdge(2, 0)
+        assertTrue(!GraphOperationsImpl.CycleDetection(graph))
       }//,
 //      test("UndirectedGraph") {
 //        var graph2: UndirectedGraph[Any] = UndirectedGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))
@@ -34,8 +37,11 @@ object OperationsSpec extends ZIOSpecDefault{
         graph = graph.addEdge(2, 3)
         graph = graph.addEdge(2, 4)
         graph = graph.addEdge(3, 2)
-        val res = GraphOperationsImpl.DepthFirstSearch(graph, 0)
-        assertTrue(res == Set(0, 1, 2, 3, 4))
+        assertTrue(GraphOperationsImpl.DepthFirstSearch(graph, 0) == Set(0, 1, 2, 3, 4))
+
+        graph = graph.removeEdge(2, 4)
+        assertTrue(GraphOperationsImpl.DepthFirstSearch(graph, 0) == Set(0, 1, 2, 3))
+        assertTrue(GraphOperationsImpl.DepthFirstSearch(graph, 4) == Set(4))
       },
       test("DiGraph") {
         // first digraph
@@ -43,20 +49,15 @@ object OperationsSpec extends ZIOSpecDefault{
         graph = graph.addEdge(0, 1)
         graph = graph.addEdge(0, 2)
         graph = graph.addEdge(1, 2)
-        graph = graph.addEdge(1, 3)
         graph = graph.addEdge(2, 0)
         graph = graph.addEdge(3, 3)
+        graph = graph.addEdge(1, 3)
         val res = GraphOperationsImpl.DepthFirstSearch(graph, 2)
         assertTrue(res == Set(2, 0, 1, 3))
-        // second digraph
-        var graph2: DiGraph[Any] = DiGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))
-        graph2 = graph2.addEdge(0, 1)
-        graph2 = graph2.addEdge(0, 2)
-        graph2 = graph2.addEdge(1, 2)
-        graph2 = graph2.addEdge(2, 3)
-        graph2 = graph2.addEdge(2, 0)
-        graph2 = graph2.addEdge(3, 3)
-        val res2 = GraphOperationsImpl.DepthFirstSearch(graph2, 1)
+
+        graph = graph.removeEdge(1, 3)
+        graph = graph.addEdge(2, 3)
+        val res2 = GraphOperationsImpl.DepthFirstSearch(graph, 2)
         assertTrue(res2 == Set(1, 2, 0, 3))
       },
       test("WeightGraph") {

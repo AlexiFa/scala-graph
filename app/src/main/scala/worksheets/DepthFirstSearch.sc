@@ -20,3 +20,4 @@ weightGraph = weightGraph.addEdge(2, 4, 5)
 weightGraph = weightGraph.addEdge(3, 2, 6)
 
 val res2 = operations.GraphOperationsImpl.DepthFirstSearch(weightGraph, 0)
+

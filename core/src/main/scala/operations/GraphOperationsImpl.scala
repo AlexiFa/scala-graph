@@ -33,7 +33,6 @@ object GraphOperationsImpl extends GraphOperations[Any] {
     }
   }
 
-  // TODO: works for digraphs, but not for undirected graphs
   private def CycleDetectionDi(graph: DiGraph[Any]): Boolean = {
     var visited: Map[Any, Boolean] = Map().withDefaultValue(false)
     var recStack: Map[Any, Boolean] = Map().withDefaultValue(false)
