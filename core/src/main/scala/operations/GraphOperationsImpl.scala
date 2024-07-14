@@ -68,7 +68,10 @@ object GraphOperationsImpl extends GraphOperations[Any] {
   
   def TopologicalSort(graph: DiGraph[Any]): Set[Any] = ???
   
-  def Dijkstra(graph: WeightGraph[Any], start: Any): Map[Any, Int] = ???
+  def Dijkstra(graph: WeightGraph[Any], start: Any): Map[Any, Int] = {
+    if graph.edges.exists { case (_, _, weight) => weight.exists(_ < 0) } then throw new IllegalArgumentException("Negative weights are not allowed")
+    Map.empty
+  }
   
   def FloydWarshall(graph: WeightGraph[Any]): Map[Any, Map[Any, Int]] = ???
 }
