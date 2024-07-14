@@ -70,6 +70,20 @@ object Main extends ZIOAppDefault {
     val decodedWGraph = wGraphJson.fromJson[WeightGraph[String]]
     println(s"WeightedGraph: $decodedWGraph")
 
+    var graph2: WeightGraph[String] =
+      WeightGraph(Map("A" -> Set.empty, "B" -> Set.empty, "C" -> Set.empty, "D" -> Set.empty, "E" -> Set.empty, "F" -> Set.empty))
+    graph2 = graph2.addEdge("A", "B", 10).addEdge("B", "A", 10)
+      .addEdge("A", "C", 15).addEdge("C", "A", 15)
+      .addEdge("B", "D", 12).addEdge("D", "B", 12)
+      .addEdge("B", "F", 15).addEdge("F", "B", 15)
+      .addEdge("C", "E", 10).addEdge("E", "C", 10)
+      .addEdge("D", "E", 2).addEdge("E", "D", 2)
+      .addEdge("D", "F", 1).addEdge("F", "D", 1)
+      .addEdge("F", "E", 5).addEdge("E", "F", 5)
+
+    val graph2json = graph2.toJson
+    println(s"WeightedGraph Json: $graph2json")
+
     Console.printLine("exited").exitCode
   }
 }

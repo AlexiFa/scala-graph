@@ -2,6 +2,7 @@ package operations
 
 import graphs._
 import scala.annotation.tailrec
+import scala.collection.mutable
 
 object GraphOperationsImpl extends GraphOperations[Any] {
   def DepthFirstSearch(graph: GraphBase[Any], start: Any): Set[Any] = {
@@ -36,6 +37,7 @@ object GraphOperationsImpl extends GraphOperations[Any] {
   private def CycleDetectionDi(graph: DiGraph[Any]): Boolean = {
     var visited: Map[Any, Boolean] = Map().withDefaultValue(false)
     var recStack: Map[Any, Boolean] = Map().withDefaultValue(false)
+
     def isCyclicUtil(vertex: Any): Boolean = {
       visited += (vertex -> true)
       recStack += (vertex -> true)
@@ -50,6 +52,7 @@ object GraphOperationsImpl extends GraphOperations[Any] {
       recStack += (vertex -> false)
       hasCycle
     }
+
     graph.vertices.exists(node => !visited(node) && isCyclicUtil(node))
   }
 
@@ -57,21 +60,46 @@ object GraphOperationsImpl extends GraphOperations[Any] {
     def isCyclicUtil(vertex: Any, parent: Any, visited: Set[Any]): Boolean = {
       val vis = visited.+(vertex)
       graph.neighbors(vertex).exists { neighbor =>
-        if (vis(neighbor)) then if (neighbor != parent) true else false
+        if vis(neighbor) then if (neighbor != parent) true else false
         else isCyclicUtil(neighbor, vertex, vis)
       }
     }
+
     graph.vertices.exists(node => isCyclicUtil(node, null, Set.empty))
   }
-  
+
   def BreadthFirstSearch(graph: GraphBase[Any], start: Any): Set[Any] = ???
-  
+
   def TopologicalSort(graph: DiGraph[Any]): Set[Any] = ???
-  
-  def Dijkstra(graph: WeightGraph[Any], start: Any): Map[Any, Int] = {
-    if graph.edges.exists { case (_, _, weight) => weight.exists(_ < 0) } then throw new IllegalArgumentException("Negative weights are not allowed")
-    Map.empty
+
+  def Dijkstra[V](graph: WeightGraph[V], start: V): Map[V, Int] = {
+    if (graph.edges.exists { case (_, _, weight) => weight.exists(_ < 0) }) {
+      throw new IllegalArgumentException("Negative weights are not allowed")
+    }
+
+    val distances = mutable.Map[V, Int](start -> 0).withDefaultValue(Int.MaxValue)
+    val priorityQueue = mutable.PriorityQueue[(Int, V)]((0, start))(Ordering.by(-_._1))
+    val visited = mutable.Set[V]()
+
+    while (priorityQueue.nonEmpty) {
+      val (currentDistance, currentVertex) = priorityQueue.dequeue()
+
+      if (!visited.contains(currentVertex)) {
+        visited += currentVertex
+
+        for ((_, neighbor, weight) <- graph.adjList.getOrElse(currentVertex, Set.empty)) {
+          val distance = currentDistance + weight.getOrElse(1) // Assuming weight is 1 if None
+
+          if (distance < distances(neighbor)) {
+            distances(neighbor) = distance
+            priorityQueue.enqueue((distance, neighbor))
+          }
+        }
+      }
+    }
+
+    distances.toMap
   }
-  
+
   def FloydWarshall(graph: WeightGraph[Any]): Map[Any, Map[Any, Int]] = ???
 }
