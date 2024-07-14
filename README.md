@@ -13,7 +13,7 @@
   - [x] Depth-first search (Undirected, Directed, Weighted)
   - [ ] Breadth-first search
   - [ ] Topological sort
-  - [ ] Cycle detection
+  - [x] Cycle detection (Undirected, Directed, Weighted)
   - [ ] Floyd's algorithm
   - [ ] Dijkstra's algorithm
 - [ ] App 

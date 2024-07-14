@@ -63,4 +63,12 @@ object GraphOperationsImpl extends GraphOperations[Any] {
     }
     graph.vertices.exists(node => isCyclicUtil(node, null, Set.empty))
   }
+  
+  def BreadthFirstSearch(graph: GraphBase[Any], start: Any): Set[Any] = ???
+  
+  def TopologicalSort(graph: DiGraph[Any]): Set[Any] = ???
+  
+  def Dijkstra(graph: WeightGraph[Any], start: Any): Map[Any, Int] = ???
+  
+  def FloydWarshall(graph: WeightGraph[Any]): Map[Any, Map[Any, Int]] = ???
 }
