@@ -15,18 +15,39 @@ object OperationsSpec extends ZIOSpecDefault{
         graph = graph.addEdge(2, 0)
         assertTrue(GraphOperationsImpl.CycleDetection(graph))
 
-        graph = graph.removeEdge(3, 3)
         graph = graph.removeEdge(2, 0)
+        graph = graph.removeEdge(1, 3)
+        assertTrue(GraphOperationsImpl.CycleDetection(graph))
+        graph = graph.removeEdge(3, 3)
         assertTrue(!GraphOperationsImpl.CycleDetection(graph))
-      }//,
-//      test("UndirectedGraph") {
-//        var graph2: UndirectedGraph[Any] = UndirectedGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))
-//        graph2 = graph2.addEdge(0, 1)
-//        graph2 = graph2.addEdge(1, 2)
-//        graph2 = graph2.addEdge(2, 3)
-//        val res2 = GraphOperationsImpl.CycleDetectionDi(graph2)
-//        assertTrue(!res2)
-//      }
+      },
+      test("UndirectedGraph") {
+        var graph: UndirectedGraph[Any] = UndirectedGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))
+        graph = graph.addEdge(0, 1)
+        graph = graph.addEdge(0, 2)
+        graph = graph.addEdge(2, 3)
+        assertTrue(!GraphOperationsImpl.CycleDetection(graph))
+
+        graph = graph.addEdge(1, 3)
+        assertTrue(GraphOperationsImpl.CycleDetection(graph))
+      },
+      test("WeightGraph") {
+        var graph: WeightGraph[Any] = WeightGraph(Map(0 -> Set.empty, 1 -> Set.empty, 2 -> Set.empty, 3 -> Set.empty))
+        graph = graph.addEdge(0, 1, 1)
+        graph = graph.addEdge(0, 2, 2)
+        graph = graph.addEdge(1, 2, 3)
+        graph = graph.addEdge(1, 3, 4)
+        graph = graph.addEdge(2, 0, 5)
+        graph = graph.addEdge(3, 3, 6)
+        assertTrue(GraphOperationsImpl.CycleDetection(graph))
+
+        graph = graph.removeEdge(1, 2)
+        assertTrue(GraphOperationsImpl.CycleDetection(graph))
+        graph = graph.removeEdge(1, 3)
+        assertTrue(GraphOperationsImpl.CycleDetection(graph))
+        graph = graph.removeEdge(3, 3)
+        assertTrue(!GraphOperationsImpl.CycleDetection(graph))
+      }
     )+
     suite("DFS")(
       test("UndirectedGraph") {

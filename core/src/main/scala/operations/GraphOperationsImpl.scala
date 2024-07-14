@@ -54,6 +54,13 @@ object GraphOperationsImpl extends GraphOperations[Any] {
   }
 
   private def CycleDetectionUndirected(graph: UndirectedGraph[Any]): Boolean = {
-    true
+    def isCyclicUtil(vertex: Any, parent: Any, visited: Set[Any]): Boolean = {
+      val vis = visited.+(vertex)
+      graph.neighbors(vertex).exists { neighbor =>
+        if (vis(neighbor)) then if (neighbor != parent) true else false
+        else isCyclicUtil(neighbor, vertex, vis)
+      }
+    }
+    graph.vertices.exists(node => isCyclicUtil(node, null, Set.empty))
   }
 }
