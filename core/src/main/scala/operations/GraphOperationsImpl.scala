@@ -28,8 +28,8 @@ object GraphOperationsImpl extends GraphOperations {
 
   def CycleDetection[V, G <: GraphBase[V]](graph: G): Boolean = {
     graph match {
-      case _: DiGraph[Any] => CycleDetectionDi(graph.asInstanceOf[DiGraph[Any]])
-      case _: UndirectedGraph[Any] => CycleDetectionUndirected(graph.asInstanceOf[UndirectedGraph[Any]])
+      case _: DiGraph[V] => CycleDetectionDi(graph.asInstanceOf[DiGraph[V]])
+      case _: UndirectedGraph[V] => CycleDetectionUndirected(graph.asInstanceOf[UndirectedGraph[V]])
     }
   }
 
