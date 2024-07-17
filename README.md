@@ -15,7 +15,7 @@
   - [ ] Topological sort
   - [x] Cycle detection (Undirected, Directed, Weighted)
   - [ ] Floyd's algorithm
-  - [ ] Dijkstra's algorithm
+  - [x] Dijkstra's algorithm
 - [ ] App 
   - [ ] Design
   - [ ] State management

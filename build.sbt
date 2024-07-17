@@ -28,8 +28,9 @@ lazy val app = (project in file("app"))
   .settings(
     name := "scala-graph-app",
     libraryDependencies ++= Seq(
-      "dev.zio" %% "zio" % "2.1.5",
+      "dev.zio" %% "zio" % "2.1.6",
       "dev.zio" %% "zio-test" % "2.1.4" % Test,
+      "org.scalatest" %% "scalatest" % "3.2.18" % Test,
       "guru.nidi" % "graphviz-java" % "0.18.1"
     ),
     testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
