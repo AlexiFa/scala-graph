@@ -14,6 +14,7 @@ case class WeightGraph[V](override val adjList: Map[V, Set[(V, V, Option[Int])]]
   }
 }
 
+
 object WeightGraph {
   def apply[V](adjList: Map[V, Set[(V, V, Option[Int])]]): WeightGraph[V] = new WeightGraph(adjList)
 

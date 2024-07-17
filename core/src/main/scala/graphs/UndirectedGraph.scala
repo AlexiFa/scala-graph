@@ -35,8 +35,8 @@ class UndirectedGraph[V](val adjList: Map[V, Set[(V, V, Option[Int])]]) extends 
     sb.append("}\n")
     sb.toString()
   }
-  
 }
+
 
 object UndirectedGraph {
   def apply[V](adjList: Map[V, Set[(V, V, Option[Int])]]): UndirectedGraph[V] = new UndirectedGraph(adjList)

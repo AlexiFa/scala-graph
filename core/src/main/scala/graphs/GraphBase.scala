@@ -26,5 +26,4 @@ trait GraphBase[V] {
     val dotString = toDot(graph)
     println(dotString)
   }
-
 }

@@ -67,7 +67,7 @@ object GraphOperationsImpl extends GraphOperations {
 
     graph.vertices.exists(node => isCyclicUtil(node, node, Set.empty))
   }
-  
+
   def BreadthFirstSearch[V](graph: GraphBase[V], start: V): Set[V] = ???
 
   def TopologicalSort[V](graph: DiGraph[V]): Set[V] = ???
@@ -100,6 +100,6 @@ object GraphOperationsImpl extends GraphOperations {
 
     distances.toMap
   }
-  
+
   def FloydWarshall[V](graph: WeightGraph[V]): Map[V, Map[V, Int]] = ???
 }
