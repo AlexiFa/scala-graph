@@ -9,9 +9,9 @@ trait GraphOperations {
 
   def BreadthFirstSearch[V](graph: GraphBase[V], start: V): Set[V]
 
-  def TopologicalSort[V](graph: DiGraph[V]): Set[V]
+  def TopologicalSort[V](graph: DiGraph[V]): List[V]
 
   def Dijkstra[V](graph: WeightGraph[V], start: V): Map[V, Int]
 
-  def FloydWarshall[V](graph: WeightGraph[V]): Map[V, Map[V, Int]]
+  def FloydWarshall[V](graph: WeightGraph[V]): Map[V, Map[V, Long]]
 }

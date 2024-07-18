@@ -1,13 +1,13 @@
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import operations.GraphOperationsImpl.DepthFirstSearch
-import Utils._
+import operations.GraphOperationsImpl.BreadthFirstSearch
+import Utils.*
 
-class DepthFirstSearchSpec extends AnyFlatSpec with Matchers {
+class BreadthFirstSearchSpec extends AnyFlatSpec with Matchers {
 
-  "DepthFirstSearch" should "traverse all the vertices of a directed graph" in {
+  "BreadthFirstSearch" should "traverse all the vertices of a directed graph" in {
     val graph = getDiGraph
-    val result = DepthFirstSearch(graph, "A")
+    val result = BreadthFirstSearch(graph, "A")
     
     val expectedResult = Set("A", "B", "C", "D")
     
@@ -16,7 +16,7 @@ class DepthFirstSearchSpec extends AnyFlatSpec with Matchers {
 
   it should "traverse all the vertices of an undirected graph" in {
     val graph = getUndirectedGraph
-    val result = DepthFirstSearch(graph, "A")
+    val result = BreadthFirstSearch(graph, "A")
     
     val expectedResult = Set("A", "B", "C", "D", "E")
     
@@ -25,10 +25,9 @@ class DepthFirstSearchSpec extends AnyFlatSpec with Matchers {
 
   it should "traverse all the vertices of a weighted graph" in {
     val graph = getWeightedGraph
-    val result = DepthFirstSearch(graph, "A")
+    val result = BreadthFirstSearch(graph, "A")
     
     val expectedResult = Set("A", "B", "C", "D", "E", "F")
-    
     result should be(expectedResult)
   }
 }

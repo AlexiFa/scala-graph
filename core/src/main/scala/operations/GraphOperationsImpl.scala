@@ -68,31 +68,51 @@ object GraphOperationsImpl extends GraphOperations {
     graph.vertices.exists(node => isCyclicUtil(node, node, Set.empty))
   }
 
-  def BreadthFirstSearch[V](graph: GraphBase[V], start: V): Set[V] = ???
-
-  def TopologicalSort[V](graph: DiGraph[V]): Set[V] = ???
-
-  def Dijkstra[V](graph: WeightGraph[V], start: V): Map[V, Int] = {
-    if (graph.edges.exists { case (_, _, weight) => weight.exists(_ < 0) }) {
-      throw new IllegalArgumentException("Negative weights are not allowed")
+  def BreadthFirstSearch[V](graph: GraphBase[V], start: V): Set[V] = {
+    @tailrec
+    def bfs(queue: List[V], visited: Set[V]): Set[V] = queue match {
+      case Nil => visited
+      case vertex :: rest =>
+        val newNeighbors = graph.neighbors(vertex).filter(!visited.contains(_))
+        bfs(rest ++ newNeighbors, visited ++ newNeighbors)
     }
 
-    val distances = mutable.Map[V, Int](start -> 0).withDefaultValue(Int.MaxValue)
-    val priorityQueue = mutable.PriorityQueue[(Int, V)]((0, start))(Ordering.by(-_._1))
+    bfs(List(start), Set(start))
+  }
+
+  def TopologicalSort[V](graph: DiGraph[V]): List[V] = {
+    val visited = mutable.Set[V]()
+    val stack = mutable.Stack[V]()
+
+    def visit(v: V): Unit = {
+      if (!visited(v)) {
+        visited += v
+        graph.neighbors(v).foreach(visit)
+        stack.push(v)
+      }
+    }
+
+    graph.vertices.foreach(visit)
+    stack.toList
+  }
+
+  def Dijkstra[V](graph: WeightGraph[V], start: V): Map[V, Int] = {
+    if (graph.edges.exists(_._3.exists(_ < 0)))
+      throw new IllegalArgumentException("Negative weights are not allowed")
+
+    val distances = mutable.Map(start -> 0)
+    val priorityQueue = mutable.PriorityQueue((0, start))(Ordering.by(-_._1))
     val visited = mutable.Set[V]()
 
     while (priorityQueue.nonEmpty) {
-      val (currentDistance, currentVertex) = priorityQueue.dequeue()
-
-      if (!visited.contains(currentVertex)) {
+      val (distance, currentVertex) = priorityQueue.dequeue()
+      if (!visited(currentVertex)) {
         visited += currentVertex
-
-        for ((_, neighbor, weight) <- graph.adjList.getOrElse(currentVertex, Set.empty)) {
-          val distance = currentDistance + weight.getOrElse(1) // Assuming weight is 1 if None
-
-          if (distance < distances(neighbor)) {
-            distances(neighbor) = distance
-            priorityQueue.enqueue((distance, neighbor))
+        graph.adjList.getOrElse(currentVertex, Set.empty).foreach { case (_, neighbor, weight) =>
+          val newDistance = distance + weight.getOrElse(1) // weight is 1 if None
+          if (newDistance < distances.getOrElse(neighbor, Int.MaxValue)) {
+            distances(neighbor) = newDistance
+            priorityQueue.enqueue((newDistance, neighbor))
           }
         }
       }
@@ -101,5 +121,47 @@ object GraphOperationsImpl extends GraphOperations {
     distances.toMap
   }
 
-  def FloydWarshall[V](graph: WeightGraph[V]): Map[V, Map[V, Int]] = ???
+  def FloydWarshall[V](graph: WeightGraph[V]): Map[V, Map[V, Long]] = {
+    val vertices = graph.vertices.toList
+    val inf = Long.MaxValue / 2  // Use Long and divide by 2 to prevent overflow
+
+    // Initialize distances
+    def initDist: Map[(V, V), Long] = {
+      (for {
+        v <- vertices
+        u <- vertices
+      } yield {
+        (v, u) -> (
+          if (v == u) 0L
+          else graph.edges.find(e => e._1 == v && e._2 == u)
+            .flatMap(_._3)
+            .map(_.toLong)
+            .getOrElse(inf)
+          )
+      }).toMap
+    }
+
+    @tailrec
+    def FloydWarshallHelper(k: Int, dist: Map[(V, V), Long]): Map[(V, V), Long] = {
+      if (k == vertices.size) dist
+      else {
+        val newDist = for {
+          i <- vertices
+          j <- vertices
+          throughK = dist.getOrElse((i, vertices(k)), inf) +
+            dist.getOrElse((vertices(k), j), inf)
+          newDist = math.min(dist.getOrElse((i, j), inf), throughK)
+        } yield (i, j) -> newDist
+
+        FloydWarshallHelper(k + 1, dist ++ newDist)
+      }
+    }
+
+    val finalDist = FloydWarshallHelper(0, initDist)
+
+    // Convert to the required format
+    vertices.map { v =>
+      v -> vertices.map(u => u -> finalDist.getOrElse((v, u), inf)).toMap
+    }.toMap
+  }
 }

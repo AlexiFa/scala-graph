@@ -5,35 +5,42 @@ import Utils._
 
 class CycleDetectionSpec extends AnyFlatSpec with Matchers {
 
-  it should "detect a cycle in a directed graph" in {
+  "CycleDetection" should "detect a cycle in a directed graph" in {
     val graph = getDiGraph
-    true should be(CycleDetection(graph))
+
+    CycleDetection(graph) should be(true)
   }
 
   it should "not detect a cycle in a directed graph" in {
     val graph = getDiGraph
-    true should be(!CycleDetection(graph.removeEdge("C", "D")))
+    val result = CycleDetection(graph.removeEdge("C", "D"))
+    
+    result should be(false)
   }
 
   it should "detect a cycle in an undirected graph" in {
     val graph = getUndirectedGraph
-    true should be(CycleDetection(graph))
+    
+    CycleDetection(graph) should be(true)
   }
 
   it should "not detect a cycle in an undirected graph" in {
     val graph = getUndirectedGraph
-    true should be(!CycleDetection(graph.removeEdge("B", "E")))
+    val result = CycleDetection(graph.removeEdge("B", "E"))
+    
+    result should be(false)
   }
 
   it should "detect a cycle in a weighted graph" in {
     val graph = getWeightedGraph
-    true should be(CycleDetection(graph))
+    
+    CycleDetection(graph) should be(true)
   }
 
   it should "not detect a cycle in a weighted graph" in {
     val graph = getWeightedGraph
-    true should be(!CycleDetection(
-      graph.removeEdge("A", "C").removeEdge("B", "F").removeEdge("D", "E")
-    ))
+    val result = CycleDetection(graph.removeEdge("A", "C").removeEdge("B", "F").removeEdge("D", "E"))
+    
+    result should be(false)
   }
 }
