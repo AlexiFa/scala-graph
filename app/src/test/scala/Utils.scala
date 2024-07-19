@@ -37,7 +37,7 @@ object Utils {
       case Right(graph) => graph
   }
 
-  private def readJsonFromFile(filePath: String): String = {
+  def readJsonFromFile(filePath: String): String = {
     val source = Source.fromFile(filePath)
     try {
       source.mkString
