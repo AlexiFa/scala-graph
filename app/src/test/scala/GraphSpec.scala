@@ -34,4 +34,18 @@ class GraphSpec extends AnyFlatSpec with Matchers {
 
     result should be(expectedResult)
   }
+
+  it should "correctly remove vertices from the graph" in {
+    val graph = getDiGraph
+    val result = graph.removeEdge("D", "C")
+      .removeEdge("C", "D")
+
+    val expectedResult = DiGraph(Map(
+      "A" -> Set(("A", "B", None), ("A", "C", None)),
+      "B" -> Set(),
+      "C" -> Set(("C", "B", None))
+    ))
+
+    result should be(expectedResult)
+  }
 }

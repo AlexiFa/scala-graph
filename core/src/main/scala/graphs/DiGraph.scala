@@ -18,7 +18,13 @@ case class DiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBa
 
   def removeEdge(v1: V, v2: V): DiGraph[V] = {
     val newAdjList = adjList.updatedWith(v1)(_.map(_.filterNot(_._2 == v2)))
-    DiGraph(newAdjList)
+    DiGraph(newAdjList).cleanupVertices
+  }
+
+  private def cleanupVertices: DiGraph[V] = {
+    val referencedVertices = adjList.values.flatten.map(_._1).toSet ++ adjList.values.flatten.map(_._2).toSet
+    val filteredAdjList = adjList.filter { case (vertex, _) => referencedVertices.contains(vertex) }
+    DiGraph(filteredAdjList)
   }
 
   def neighbors(v: V): Set[V] = adjList.getOrElse(v, Set.empty).map(_._2)

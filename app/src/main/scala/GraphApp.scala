@@ -4,7 +4,6 @@ import zio.json.*
 import graphs.*
 import operations.*
 
-import scala.collection.immutable.HashMap
 import scala.io.Source
 
 object GraphApp extends ZIOAppDefault {
@@ -233,7 +232,7 @@ object GraphApp extends ZIOAppDefault {
 
   private def loadGraphFromJson: ZIO[Any, Throwable, Unit] = {
     for {
-      filePath <- getUserInput("Enter the path to the JSON file:")
+      filePath <- chooseFilePathOption
       _ <- ZIO.attempt {
         val source = Source.fromFile(filePath)
         val jsonString = source.mkString
@@ -257,6 +256,44 @@ object GraphApp extends ZIOAppDefault {
         Console.printLine(s"Error loading graph: ${error.getMessage}") *> loadGraphFromJson
       }
     } yield ()
+  }
+
+  private def chooseFilePathOption: ZIO[Any, Throwable, String] = {
+    val options = graph match {
+      case _: WeightGraph[Any] =>
+        List(
+          "1. Enter a new file path",
+          "2. Use a default file path for WeightGraph"
+        )
+      case _: DiGraph[Any] =>
+        List(
+        "1. Enter a new file path",
+        "2. Use a default file path for DiGraph"
+        )
+      case _: UndirectedGraph[Any] =>
+        List(
+        "1. Enter a new file path",
+        "2. Use a default file path for UndirectedGraph"
+        )
+    }
+
+    for {
+      _ <- Console.printLine("Choose file path option:")
+      _ <- ZIO.foreachDiscard(options)(option => Console.printLine(option))
+      _ <- Console.printLine("-" * 65)
+      choice <- getUserInput("Enter your choice:")
+      filePath <- choice match {
+        case "1" => getUserInput("Enter the path to the JSON file:")
+        case "2" =>
+          val defaultPath = graph match {
+            case _: WeightGraph[Any] => "app/src/main/scala/library/default_weight_graph.json"
+            case _: DiGraph[Any] => "app/src/main/scala/library/default_directed_graph.json.json"
+            case _: UndirectedGraph[Any] => "app/src/main/scala/library/default_undirected_graph.json"
+          }
+          ZIO.succeed(defaultPath)
+        case _ => Console.printLine("Invalid choice. Please try again.") *> chooseFilePathOption
+      }
+    } yield filePath
   }
 
   private def initialMenu: ZIO[Any, Throwable, Unit] = {
