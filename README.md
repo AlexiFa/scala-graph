@@ -15,6 +15,11 @@ Samples of graphs are provided in the `resources` folder. (as example too)
 
 ### Run the app
 
+```bash
+git clone https://github.com/AlexiFa/scala-graph.git
+cd scala-graph
+```
+
 To run the app, use the following command:
 
 ```bash
