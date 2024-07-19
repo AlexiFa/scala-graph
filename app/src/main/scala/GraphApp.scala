@@ -71,7 +71,7 @@ object GraphApp extends ZIOAppDefault {
         case "1" => for {
           from <- getUserInput("Enter the source vertex:")
           to <- getUserInput("Enter the destination vertex:")
-          weight <- getOptionalWeight("Enter the weight (or leave blank for no weight):")
+          weight <- getOptionalWeight("Enter the weight:")
           _ <- addEdge(from, to, weight)
           _ <- printEdgeAdded(from, to, weight)
         } yield ()
