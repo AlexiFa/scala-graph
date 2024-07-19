@@ -96,29 +96,35 @@ object GraphOperationsImpl extends GraphOperations {
     stack.toList
   }
 
-  def Dijkstra[V](graph: WeightGraph[V], start: V): Map[V, Int] = {
+  def Dijkstra[V](graph: WeightGraph[V], start: V): Map[V, (Int, List[V])] = {
     if (graph.edges.exists(_._3.exists(_ < 0)))
       throw new IllegalArgumentException("Negative weights are not allowed")
 
-    val distances = mutable.Map(start -> 0)
-    val priorityQueue = mutable.PriorityQueue((0, start))(Ordering.by(-_._1))
-    val visited = mutable.Set[V]()
-
-    while (priorityQueue.nonEmpty) {
-      val (distance, currentVertex) = priorityQueue.dequeue()
-      if (!visited(currentVertex)) {
-        visited += currentVertex
-        graph.adjList.getOrElse(currentVertex, Set.empty).foreach { case (_, neighbor, weight) =>
-          val newDistance = distance + weight.getOrElse(1) // weight is 1 if None
-          if (newDistance < distances.getOrElse(neighbor, Int.MaxValue)) {
-            distances(neighbor) = newDistance
-            priorityQueue.enqueue((newDistance, neighbor))
+    @tailrec
+    def DijkstraHelper(
+                queue: List[(Int, V)],
+                distances: Map[V, (Int, List[V])],
+                visited: Set[V]
+              ): Map[V, (Int, List[V])] = queue match {
+      case Nil => distances
+      case (distance, currentVertex) :: rest =>
+        if (visited(currentVertex)) DijkstraHelper(rest, distances, visited)
+        else {
+          val (newDistances, newQueue) = graph.adjList.getOrElse(currentVertex, Set.empty).foldLeft((distances, rest)) {
+            case ((dists, q), (_, neighbor, weight)) =>
+              val newDistance = distance + weight.getOrElse(1)
+              if (newDistance < dists.getOrElse(neighbor, (Int.MaxValue, Nil))._1) {
+                val newPath = dists(currentVertex)._2 :+ neighbor
+                (dists.updated(neighbor, (newDistance, newPath)), (newDistance, neighbor) :: q)
+              } else {
+                (dists, q)
+              }
           }
+          DijkstraHelper(newQueue.sortBy(_._1), newDistances, visited + currentVertex)
         }
-      }
     }
 
-    distances.toMap
+    DijkstraHelper(List((0, start)), Map(start -> (0, List(start))), Set.empty)
   }
 
   def FloydWarshall[V](graph: WeightGraph[V]): Map[V, Map[V, Long]] = {

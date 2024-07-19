@@ -11,7 +11,7 @@ trait GraphOperations {
 
   def TopologicalSort[V](graph: DiGraph[V]): List[V]
 
-  def Dijkstra[V](graph: WeightGraph[V], start: V): Map[V, Int]
+  def Dijkstra[V](graph: WeightGraph[V], start: V): Map[V, (Int, List[V])]
 
   def FloydWarshall[V](graph: WeightGraph[V]): Map[V, Map[V, Long]]
 }
