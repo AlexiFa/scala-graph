@@ -148,6 +148,7 @@ Tests are in the `app` subproject, and we created one class per algorithm. And a
 - [x] Base Methods (get vertices, edges, neighbors, addEdge, removeEdge)
 - [x] Types of graphs (directed, undirected, weighted)
 - [x] JSON encoding/decoding
+- [ ] JSON loading
 - [x] GraphViz display
 - [x] Graph algorithms
   - [x] Depth-first search (Undirected, Directed, Weighted)

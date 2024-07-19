@@ -9,7 +9,7 @@ class UndirectedGraph[V](val adjList: Map[V, Set[(V, V, Option[Int])]]) extends 
 
   def addEdge(edge: (V, V, Option[Int])): UndirectedGraph[V] = {
     val (v1, v2, weight) = edge
-    val edgeReverted = (v2, v1,weight)
+    val edgeReverted = (v2, v1, weight)
     val newAdjList = adjList.updatedWith(v1)(_.map(_ + edge).orElse(Some(Set(edge))))
       .updatedWith(v2)(_.map(_ + edgeReverted).orElse(Some(Set(edgeReverted))))
     UndirectedGraph(newAdjList)
