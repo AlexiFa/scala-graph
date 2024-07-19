@@ -59,7 +59,7 @@ We created, for more clarity, a trait containing all the operations that can be 
 
 ### App
 
-#### Tests
+#### Testing
 
 We created tests for each graph algorithms. We used the `FlatSpec` library for testing. More details in the [Tests](#tests) section.
 
