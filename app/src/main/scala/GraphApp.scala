@@ -241,15 +241,15 @@ object GraphApp extends ZIOAppDefault {
 
         // Decode the JSON based on the current type of `graph`
         graph match {
+          case _: WeightGraph[Any] =>
+            val decodedGraph = jsonString.fromJson[WeightGraph[String]].getOrElse(throw new IllegalArgumentException("Invalid JSON for WeightGraph"))
+            graph = decodedGraph.asInstanceOf[WeightGraph[Any]]
           case _: DiGraph[Any] =>
             val decodedGraph = jsonString.fromJson[DiGraph[String]].getOrElse(throw new IllegalArgumentException("Invalid JSON for DiGraph"))
             graph = decodedGraph.asInstanceOf[DiGraph[Any]]
           case _: UndirectedGraph[Any] =>
             val decodedGraph = jsonString.fromJson[UndirectedGraph[String]].getOrElse(throw new IllegalArgumentException("Invalid JSON for UndirectedGraph"))
             graph = decodedGraph.asInstanceOf[UndirectedGraph[Any]]
-          case _ =>
-            val decodedGraph = jsonString.fromJson[WeightGraph[String]].getOrElse(throw new IllegalArgumentException("Invalid JSON for WeightGraph"))
-            graph = decodedGraph.asInstanceOf[WeightGraph[Any]]
         }
 
         Console.printLine("Graph loaded successfully.")
