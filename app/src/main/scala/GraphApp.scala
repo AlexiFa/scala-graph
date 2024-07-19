@@ -41,6 +41,8 @@ object GraphApp extends ZIOAppDefault {
     } yield input
 
   def getOptionalWeight(prompt: String): ZIO[Any, Throwable, Option[Int]] =
+    if (!graph.isInstanceOf[WeightGraph[_]]) ZIO.succeed(None)
+    else
     for {
       _ <- Console.printLine(prompt)
       input <- Console.readLine
@@ -268,6 +270,6 @@ object GraphApp extends ZIOAppDefault {
       _ <- printBanner("Welcome to our Graph App in Scala")
       _ <- graphTypeMenu
       _ <- initialMenu
-      _ <- menu
+      //_ <- menu
     } yield ()
 }
