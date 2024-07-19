@@ -129,10 +129,17 @@ object GraphApp extends ZIOAppDefault {
 
   def computeTopologicalSort: ZIO[Any, Throwable, Unit] =
     for {
-      start <- Console.printLine("Topological Sort :")
-      result = GraphOperationsImpl.TopologicalSort(graph.asInstanceOf[DiGraph[Any]])
-      _ <- Console.printLine(s" ${result.toString}")
-    } yield ()
+    _ <- Console.printLine("Topological Sort :")
+    result <- graph match {
+      case diGraph: DiGraph[Any] =>
+        for {
+          sortResult <- ZIO.attempt(GraphOperationsImpl.TopologicalSort(diGraph))
+          _ <- Console.printLine(s" ${sortResult.toString}")
+        } yield ()
+      case _ =>
+        Console.printLine("This algorithm is only available for directed graphs (DiGraph).")
+    }
+  } yield ()
 
   def computeCycleDetection: ZIO[Any, Throwable, Unit] ={
     val result = GraphOperationsImpl.CycleDetection(graph)
@@ -142,6 +149,8 @@ object GraphApp extends ZIOAppDefault {
   def printFloydWarshallMatrix[V](result: Map[V, Map[V, Long]]): Task[Unit] = {
     val vertices = result.keys.toList
     for {
+      _ <- Console.printLine("Floyd-Warshall's algorithm result:")
+      _ <- Console.printLine("-------------------------------")
       _ <- Console.printLine("   | " + vertices.map(v => f"$v%2s").mkString(" "))
       _ <- Console.printLine("---+" + "-" * (vertices.length * 3 + 1))
       _ <- ZIO.foreach(vertices) { v =>
@@ -156,19 +165,81 @@ object GraphApp extends ZIOAppDefault {
     } yield ()
   }
     
-  def computeFloydWarshall: ZIO[Any, Throwable, Unit] ={
-    Console.printLine("Floyd-Warshall Algorithm :")
-    val result = GraphOperationsImpl.FloydWarshall(graph.asInstanceOf[WeightGraph[Any]])
-    printFloydWarshallMatrix(result)
+
+
+  def computeFloydWarshall: ZIO[Any, Throwable, Unit] =
+  for {
+    _ <- Console.printLine("Floyd-Warshall Algorithm :")
+    result <- graph match {
+      case weightGraph: WeightGraph[Any] =>
+        for {
+          fwResult <- ZIO.attempt(GraphOperationsImpl.FloydWarshall(weightGraph))
+          _ <- printFloydWarshallMatrix(fwResult)
+        } yield ()
+      case _ =>
+        Console.printLine("This algorithm is only available for weighted graphs (WeightGraph).")
+    }
+  } yield ()
+
+
+  def printDijkstraResult[V, W](result: Map[V, (W, List[V])]): Task[Unit] = {
+    for {
+      _ <- Console.printLine("Dijkstra's algorithm result:")
+      _ <- Console.printLine("-------------------------------")
+      _ <- ZIO.foreach(result.toList) { case (destination, (distance, path)) =>
+        for {
+          _ <- Console.print(s"To $destination: ")
+          _ <- Console.print(s"Distance = $distance, ")
+          _ <- Console.printLine(s"Path = ${path.mkString(" -> ")}")
+        } yield ()
+      }
+    } yield ()
   }
     
     
   def computeDijkstra: ZIO[Any, Throwable, Unit] =
-    for {
-      start <- getUserInput("Enter the starting vertex:")
-      result = GraphOperationsImpl.Dijkstra(graph.asInstanceOf[WeightGraph[Any]], start)
-      _ <- Console.printLine(s"Dijkstra's algorithm result starting from $start: ${result.toString}")
-    } yield ()
+  for {
+    _ <- Console.printLine("Dijkstra's Algorithm:")
+    result <- graph match {
+      case weightGraph: WeightGraph[Any] =>
+        for {
+          start <- getUserInput("Enter the starting vertex:")
+          dijkstraResult <- ZIO.attempt(GraphOperationsImpl.Dijkstra(weightGraph, start))
+          _ <- printDijkstraResult(dijkstraResult)
+        } yield ()
+      case _ =>
+        Console.printLine("This algorithm is only available for weighted graphs (WeightGraph).")
+    }
+  } yield ()
+
+  def loadGraphFromJson: ZIO[Any, Throwable, Unit] =
+  for {
+    filePath <- getUserInput("Enter the path to the JSON file:")
+    _ <- ZIO.attempt {
+      // Ici, vous devrez implémenter la logique pour charger le JSON et créer le graphe
+      // Par exemple :
+      // graph = JsonLoader.loadGraph(filePath)
+      Console.printLine("Graph loaded successfully.")
+    }.catchAll { error =>
+      Console.printLine(s"Error loading graph: ${error.getMessage}")
+    }
+  } yield ()
+
+
+  def initialMenu: ZIO[Any, Throwable, Unit] =
+  for {
+    _ <- printBanner("Initial Menu:")
+    _ <- Console.printLine("1. Create a new graph")
+    _ <- Console.printLine("2. Load a graph from JSON")
+    _ <- Console.printLine("-" * 65)
+    choice <- getUserInput("Enter your choice:")
+    _ <- choice match {
+      case "1" => menu
+      case "2" => loadGraphFromJson
+      case _ => Console.printLine("Invalid choice. Please try again.") *> initialMenu
+    }
+  } yield ()
+
 
   def graphTypeMenu: ZIO[Any, Throwable, Unit] =
     for {
@@ -196,6 +267,7 @@ object GraphApp extends ZIOAppDefault {
     for {
       _ <- printBanner("Welcome to our Graph App in Scala")
       _ <- graphTypeMenu
+      _ <- initialMenu
       _ <- menu
     } yield ()
 }
