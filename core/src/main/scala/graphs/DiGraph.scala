@@ -10,6 +10,7 @@ case class DiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBa
   def addEdge(edge: (V, V, Option[Int])): DiGraph[V] = {
     val (v1, v2, _) = edge
     val newAdjList = adjList.updatedWith(v1)(_.map(_ + edge).orElse(Some(Set(edge))))
+    .updatedWith(v2)(_.map(_ + edge).orElse(Some(Set(edge))))
     DiGraph(newAdjList)
   }
 

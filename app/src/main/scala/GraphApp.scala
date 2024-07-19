@@ -2,6 +2,7 @@ import zio._
 import zio.Console._
 import graphs._
 import operations._
+import scala.collection.immutable.HashMap
 
 object GraphApp extends ZIOAppDefault {
 
@@ -127,14 +128,41 @@ object GraphApp extends ZIOAppDefault {
     } yield ()
 
   def computeTopologicalSort: ZIO[Any, Throwable, Unit] =
-    Console.printLine("Floyd's algorithm (not implemented yet)")
+    for {
+      start <- Console.printLine("Topological Sort :")
+      result = GraphOperationsImpl.TopologicalSort(graph.asInstanceOf[DiGraph[Any]])
+      _ <- Console.printLine(s" ${result.toString}")
+    } yield ()
 
-  def computeCycleDetection: ZIO[Any, Throwable, Unit] =
-    Console.printLine("Floyd's algorithm (not implemented yet)")
+  def computeCycleDetection: ZIO[Any, Throwable, Unit] ={
+    val result = GraphOperationsImpl.CycleDetection(graph)
+    if (result) Console.printLine(s"Cycle is find") else Console.printLine(s"Tere is no cycle")
+  }
 
-  def computeFloydWarshall: ZIO[Any, Throwable, Unit] =
-    Console.printLine("Floyd's algorithm (not implemented yet)")
-
+  def printFloydWarshallMatrix[V](result: Map[V, Map[V, Long]]): Task[Unit] = {
+    val vertices = result.keys.toList
+    for {
+      _ <- Console.printLine("   | " + vertices.map(v => f"$v%2s").mkString(" "))
+      _ <- Console.printLine("---+" + "-" * (vertices.length * 3 + 1))
+      _ <- ZIO.foreach(vertices) { v =>
+        for {
+          _ <- Console.print(f"$v%2s | ")
+          _ <- ZIO.foreach(vertices) { u =>
+            Console.print(f"${result(v)(u)}%2d ")
+          }
+          _ <- Console.printLine("")
+        } yield ()
+      }
+    } yield ()
+  }
+    
+  def computeFloydWarshall: ZIO[Any, Throwable, Unit] ={
+    Console.printLine("Floyd-Warshall Algorithm :")
+    val result = GraphOperationsImpl.FloydWarshall(graph.asInstanceOf[WeightGraph[Any]])
+    printFloydWarshallMatrix(result)
+  }
+    
+    
   def computeDijkstra: ZIO[Any, Throwable, Unit] =
     for {
       start <- getUserInput("Enter the starting vertex:")
