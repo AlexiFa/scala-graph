@@ -285,6 +285,5 @@ object GraphApp extends ZIOAppDefault {
       _ <- printBanner("Welcome to our Graph App in Scala")
       _ <- graphTypeMenu
       _ <- initialMenu
-      _ <- menu
     } yield ()
 }
