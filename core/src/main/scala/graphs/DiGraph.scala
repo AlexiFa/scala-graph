@@ -10,14 +10,14 @@ case class DiGraph[V](adjList: Map[V, Set[(V, V, Option[Int])]]) extends GraphBa
   def addEdge(edge: (V, V, Option[Int])): DiGraph[V] = {
     val (v1, v2, _) = edge
     val newAdjList = adjList.updatedWith(v1)(_.map(_ + edge).orElse(Some(Set(edge))))
-    .updatedWith(v2)(existing => existing.orElse(Some(Set.empty))).filter(_._2.nonEmpty)
+    .updatedWith(v2)(existing => existing.orElse(Some(Set.empty)))
     DiGraph(newAdjList)
   }
 
   def addEdge(from: V, to: V): DiGraph[V] = addEdge((from, to, None))
 
   def removeEdge(v1: V, v2: V): DiGraph[V] = {
-    val newAdjList = adjList.updatedWith(v1)(_.map(_.filterNot(_._2 == v2)))
+    val newAdjList = adjList.updatedWith(v1)(_.map(_.filterNot(_._2 == v2))).filter(_._2.nonEmpty)
     DiGraph(newAdjList)
   }
 
