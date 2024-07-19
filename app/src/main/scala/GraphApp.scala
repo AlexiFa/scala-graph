@@ -136,7 +136,7 @@ object GraphApp extends ZIOAppDefault {
 
   def computeCycleDetection: ZIO[Any, Throwable, Unit] ={
     val result = GraphOperationsImpl.CycleDetection(graph)
-    if (result) Console.printLine(s"Cycle is find") else Console.printLine(s"Tere is no cycle")
+    if (result) Console.printLine(s"Cycle is found") else Console.printLine(s"There is no cycle")
   }
 
   def printFloydWarshallMatrix[V](result: Map[V, Map[V, Long]]): Task[Unit] = {
