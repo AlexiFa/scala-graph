@@ -1,8 +1,11 @@
-import zio._
-import zio.Console._
-import graphs._
-import operations._
+import zio.*
+import zio.Console.*
+import zio.json.*
+import graphs.*
+import operations.*
+
 import scala.collection.immutable.HashMap
+import scala.io.Source
 
 object GraphApp extends ZIOAppDefault {
 
@@ -122,7 +125,7 @@ object GraphApp extends ZIOAppDefault {
         case "7" => ZIO.unit
         case _ => Console.printLine("Invalid choice. Please try again.")
       }
-      _ <- if (choice == "7") menu else algorithmMenu
+      _ <- algorithmMenu.unless(choice == "7")
     } yield ()
   }
 
@@ -232,12 +235,26 @@ object GraphApp extends ZIOAppDefault {
     for {
       filePath <- getUserInput("Enter the path to the JSON file:")
       _ <- ZIO.attempt {
-        // Ici, vous devrez implémenter la logique pour charger le JSON et créer le graphe
-        // Par exemple :
-        // graph = JsonLoader.loadGraph(filePath)
+        val source = Source.fromFile(filePath)
+        val jsonString = source.mkString
+        source.close()
+
+        // Decode the JSON based on the current type of `graph`
+        graph match {
+          case _: DiGraph[Any] =>
+            val decodedGraph = jsonString.fromJson[DiGraph[String]].getOrElse(throw new IllegalArgumentException("Invalid JSON for DiGraph"))
+            graph = decodedGraph.asInstanceOf[DiGraph[Any]]
+          case _: UndirectedGraph[Any] =>
+            val decodedGraph = jsonString.fromJson[UndirectedGraph[String]].getOrElse(throw new IllegalArgumentException("Invalid JSON for UndirectedGraph"))
+            graph = decodedGraph.asInstanceOf[UndirectedGraph[Any]]
+          case _ =>
+            val decodedGraph = jsonString.fromJson[WeightGraph[String]].getOrElse(throw new IllegalArgumentException("Invalid JSON for WeightGraph"))
+            graph = decodedGraph.asInstanceOf[WeightGraph[Any]]
+        }
+
         Console.printLine("Graph loaded successfully.")
       }.catchAll { error =>
-        Console.printLine(s"Error loading graph: ${error.getMessage}")
+        Console.printLine(s"Error loading graph: ${error.getMessage}") *> loadGraphFromJson
       }
     } yield ()
   }
@@ -250,7 +267,7 @@ object GraphApp extends ZIOAppDefault {
       _ <- Console.printLine("-" * 65)
       choice <- getUserInput("Enter your choice:")
       _ <- choice match {
-        case "1" => menu
+        case "1" => ZIO.unit
         case "2" => loadGraphFromJson
         case _ => Console.printLine("Invalid choice. Please try again.") *> initialMenu
       }
