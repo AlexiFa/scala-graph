@@ -27,10 +27,14 @@ class UndirectedGraph[V](val adjList: Map[V, Set[(V, V, Option[Int])]]) extends 
 
   override def toDot(graph: GraphBase[V]): String = {
     val sb = new StringBuilder
-    sb.append("digraph G {\n")
+    var counter = Set.empty[(V, V)]
+    sb.append("undirected graph G {\n")
     for ((v1, v2, weight) <- graph.edges) {
-      val label = weight.map(w => s""" [label="$w"]""").getOrElse("")
-      sb.append(s"""  "$v1" -- "$v2"$label;\n""")
+      if (!counter.contains((v1, v2)) && !counter.contains((v2, v1))) {
+        val label = weight.map(w => s""" [label="$w"]""").getOrElse("")
+        sb.append(s"""  "$v1" -- "$v2"$label;\n""")
+        counter += ((v1, v2))
+      }
     }
     sb.append("}\n")
     sb.toString()
